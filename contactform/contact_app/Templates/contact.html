@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -33,7 +35,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        button {
+        .button1 {
             background-color: #28a745;
             color: white;
             padding: 10px;
@@ -42,8 +44,20 @@
             width: 100%;
             font-size: 16px;
         }
-        button:hover {
+        .button2 {
+            background-color:rgb(13, 116, 234);
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .button1:hover {
             background-color: #218838;
+        }
+        .button2:hover {
+            background-color:rgb(40, 7, 157);
         }
         .success {
             color: green;
@@ -60,7 +74,7 @@
 </head>
 <body>
 
-    <div class="container">
+    <div class="container mt-5">
         <h2>Contact Form</h2>
         {% if messages %}
         {% for message in messages %}
@@ -72,49 +86,10 @@
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Submit</button>
-        </form>
+            <button class="button1" type="submit">Submit</button>
+        </form><br>
+        <button class="button2"><a class="nav-link text-white" href="{% url 'login' %}">View List</a></button>
     </div>
-
-    <script>
-        document.getElementById("contactForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            let isValid = true;
-            let name = document.getElementById("name").value.trim();
-            let email = document.getElementById("email").value.trim();
-            let message = document.getElementById("message").value.trim();
-            let successMessage = document.getElementById("successMessage");
-
-            document.getElementById("nameError").textContent = "";
-            document.getElementById("emailError").textContent = "";
-            document.getElementById("messageError").textContent = "";
-
-            if (name === "") {
-                document.getElementById("nameError").textContent = "Name is required.";
-                isValid = false;
-            }
-            if (email === "") {
-                document.getElementById("emailError").textContent = "Email is required.";
-                isValid = false;
-            } else if (!/\S+@\S+\.\S+/.test(email)) {
-                document.getElementById("emailError").textContent = "Invalid email format.";
-                isValid = false;
-            }
-            if (message === "") {
-                document.getElementById("messageError").textContent = "Message cannot be empty.";
-                isValid = false;
-            }
-
-            if (isValid) {
-                successMessage.style.display = "block";
-                setTimeout(() => {
-                    successMessage.style.display = "none";
-                    document.getElementById("contactForm").reset();
-                }, 1000);
-            }
-        });
-    </script>
 
 </body>
 </html>
