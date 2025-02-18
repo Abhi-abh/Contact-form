@@ -9,7 +9,7 @@ def contact(request):
     form = ContactForm()  
 
     if request.method == "POST":
-        form = ContactForm(request.POST)
+        form = ContactForm(request.POST ,request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, 'Form Successfully Submitted')

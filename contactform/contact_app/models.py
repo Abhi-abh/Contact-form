@@ -2,13 +2,14 @@ from django.db import models
 
 # Create your models here.
 
-from django.db import models
 
 class Contact(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='media/images/', blank=True, null=True)  
+    pdf = models.FileField(upload_to='media/pdfs/', blank=True, null=True) 
 
     def __str__(self):
         return self.name
