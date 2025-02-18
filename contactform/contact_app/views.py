@@ -3,6 +3,7 @@ from . models import Contact
 from .forms import ContactForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.models import User 
 
 # Create your views here.
 
@@ -26,9 +27,15 @@ def list_contact(request):
     
 def loginpage(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
+        email = request.POST.get('email')  # Changed from 'name' to 'email'
         password = request.POST.get('password')
-        user = authenticate(request, username=name, password=password)
+
+        try:
+            user = User.objects.get(email=email)  # Get user by email
+            user = authenticate(request, username=user.username, password=password)  # Authenticate using username
+        except User.DoesNotExist:
+            user = None
+
         if user is not None:
             if user.is_staff or user.is_superuser:  # Allow only staff or admin users
                 auth_login(request, user)
@@ -37,9 +44,10 @@ def loginpage(request):
                 messages.error(request, "Access restricted to admin only!")
                 return redirect('login')
         else:
-            messages.error(request, "Username or Password is incorrect!")
+            messages.error(request, "Email or Password is incorrect!")
             return redirect('login')
-    return render(request,"loginpage.html")
+
+    return render(request, "loginpage.html")
 
 
 def views_page(request,id):
